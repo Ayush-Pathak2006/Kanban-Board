@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDraggable } from '@dnd-kit/core';
 import type { KanbanTask } from './KanbanBoard.types';
 
 const getInitials = (name: string) => name.substring(0, 2).toUpperCase(); 
@@ -17,11 +18,32 @@ const priorityColors = {
 };
 
 export const KanbanCard: React.FC<KanbanCardProps> = ({ task }) => {
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    isDragging, 
+  } = useDraggable({
+    id: task.id, 
+    data: {
+      type: 'Task', 
+      task,
+    }
+  });
+
   const priorityColor = task.priority ? priorityColors[task.priority] : 'border-l-gray-300';
   const overdue = task.dueDate && isOverdue(task.dueDate);
+  const style = {
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   return (
     <div 
+      ref={setNodeRef} 
+      style={style} 
+      {...attributes}
+      {...listeners} 
       className={`bg-white border border-neutral-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing border-l-4 ${priorityColor}`}
     >
       <div className="flex items-start justify-between mb-2"> 
@@ -57,8 +79,8 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task }) => {
         )}
       </div>
 
-      {task.dueDate && ( 
-        <div className={`text-xs mt-2 ${overdue ? 'text-red-600' : 'text-neutral-500'}`}> 
+      {task.dueDate && task.status !== 'done' && (
+        <div className={`text-xs mt-2 ${overdue ? 'text-red-600' : 'text-neutral-500'}`}>
           Due: {formatDate(task.dueDate)}
         </div>
       )}

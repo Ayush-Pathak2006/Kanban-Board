@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import { KanbanCard } from './KanbanCard';
 import type { KanbanTask, KanbanColumn as KanbanColumnType } from './KanbanBoard.types';
 interface KanbanColumnProps {
@@ -8,9 +9,18 @@ interface KanbanColumnProps {
 
 export const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, tasks }) => {
   const taskCount = tasks.length;
+  const { setNodeRef } = useDroppable({
+    id: column.id, 
+    data: {
+      type: 'Column',
+      column,
+    }
+  });
 
   return (
-    <div className="flex w-[280px] flex-shrink-0 flex-col rounded-lg bg-neutral-100">
+    <div 
+    ref={setNodeRef}
+    className="flex w-[280px] flex-shrink-0 flex-col rounded-lg bg-neutral-100">
       <div className="flex items-center justify-between p-3">
         <h3 className="text-sm font-semibold text-neutral-700">
           {column.title}
