@@ -5,9 +5,10 @@ import type { KanbanTask, KanbanColumn as KanbanColumnType } from './KanbanBoard
 interface KanbanColumnProps {
   column: KanbanColumnType;
   tasks: KanbanTask[]; 
+  onTaskClick: (task: KanbanTask) => void;
 }
 
-export const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, tasks }) => {
+export const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, tasks, onTaskClick }) => {
   const taskCount = tasks.length;
   const { setNodeRef } = useDroppable({
     id: column.id, 
@@ -32,7 +33,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, tasks }) => 
 
       <div className="flex-1 space-y-3 overflow-y-auto p-3">
         {tasks.map((task) => (
-          <KanbanCard key={task.id} task={task} />
+          <KanbanCard key={task.id} task={task} onClick={() => onTaskClick(task)} />
         ))}
         {taskCount === 0 && (
           <div className="flex h-20 items-center justify-center rounded-lg border-2 border-dashed border-neutral-300 text-sm text-neutral-500">

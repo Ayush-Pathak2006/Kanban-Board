@@ -8,6 +8,7 @@ const formatDate = (date: Date) => date.toLocaleDateString();
 
 interface KanbanCardProps {
   task: KanbanTask; 
+  onClick: () => void;
 }
 
 const priorityColors = {
@@ -17,19 +18,19 @@ const priorityColors = {
   urgent: 'border-l-red-500',
 };
 
-export const KanbanCard: React.FC<KanbanCardProps> = ({ task }) => {
+export const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
 
   const {
     attributes,
     listeners,
     setNodeRef,
-    isDragging, 
+    isDragging,
   } = useDraggable({
-    id: task.id, 
+    id: task.id,
     data: {
-      type: 'Task', 
+      type: 'Task',
       task,
-    }
+    },
   });
 
   const priorityColor = task.priority ? priorityColors[task.priority] : 'border-l-gray-300';
@@ -44,6 +45,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ task }) => {
       style={style} 
       {...attributes}
       {...listeners} 
+      onClick={onClick}
       className={`bg-white border border-neutral-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing border-l-4 ${priorityColor}`}
     >
       <div className="flex items-start justify-between mb-2"> 

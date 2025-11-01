@@ -5,9 +5,10 @@ import type { KanbanTask, KanbanColumn as KanbanColumnType } from './KanbanBoard
 interface KanbanViewProps {
   columns: KanbanColumnType[];
   tasks: Record<string, KanbanTask>; 
+  onTaskClick: (task: KanbanTask) => void;
 }
 
-export const KanbanBoard: React.FC<KanbanViewProps> = ({ columns, tasks }) => {
+export const KanbanBoard: React.FC<KanbanViewProps> = ({ columns, tasks, onTaskClick }) => {
   return (
     <div className="flex w-full space-x-4 overflow-x-auto p-4">
       {columns.map((column) => {
@@ -18,6 +19,7 @@ export const KanbanBoard: React.FC<KanbanViewProps> = ({ columns, tasks }) => {
             key={column.id} 
             column={column} 
             tasks={tasksForColumn} 
+            onTaskClick={onTaskClick}
           />
         );
       })}
