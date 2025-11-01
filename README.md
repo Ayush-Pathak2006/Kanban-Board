@@ -16,7 +16,7 @@
     ```
 2.  Navigate into the project:
     ```bash
-    cd [Kanba-Board-Ayush]
+    cd [Kanba-Board]
     ```
 3.  Install dependencies:
     ```bash
